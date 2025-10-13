@@ -1,0 +1,6 @@
+const PUBLIC_SUPABASE_URL = "https://nhyohiunazzykkrxtyql.supabase.co";
+const PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5oeW9oaXVuYXp6eWtrcnh0eXFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAzMzEwMTEsImV4cCI6MjA3NTkwNzAxMX0.euUALODbQSUFyQeqBG5q9mXwW_lDSSxox9E1CRR7AQU";
+export {
+  PUBLIC_SUPABASE_URL as P,
+  PUBLIC_SUPABASE_ANON_KEY as a
+};
