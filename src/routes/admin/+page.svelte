@@ -63,7 +63,7 @@
       <nav class="nav">
         <a href="/" class="logo">HOUSE OF LE PALLEVON</a>
         <div class="nav-links">
-          <span class="nav-text">Admin</span>
+          <span class="nav-text">Admin: {data.profile?.email}</span>
           <button on:click={handleLogout} class="nav-link btn-logout">Logout</button>
         </div>
       </nav>

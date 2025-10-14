@@ -54,7 +54,16 @@
       <nav class="nav">
         <a href="/" class="logo">HOUSE OF LE PALLEVON</a>
         <div class="nav-links">
-          <a href="/auth/login" class="nav-link">Account</a>
+          {#if data.profile?.role === 'admin'}
+            <a href="/admin" class="nav-link">Admin Dashboard</a>
+          {/if}
+          {#if data.session}
+            <form action="/auth/logout" method="POST" style="display: inline;">
+              <button type="submit" class="nav-link btn-logout">Logout</button>
+            </form>
+          {:else}
+            <a href="/auth/login" class="nav-link">Account</a>
+          {/if}
         </div>
       </nav>
     </div>
@@ -193,6 +202,13 @@
 
   .nav-link:hover {
     color: #c58e46;
+  }
+
+  .btn-logout {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
   }
 
   main {

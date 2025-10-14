@@ -1,6 +1,8 @@
 import { redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
+const ADMIN_EMAIL = 'koechmanoah32@gmail.com';
+
 export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
   const code = url.searchParams.get('code');
 
@@ -17,12 +19,19 @@ export const GET: RequestHandler = async ({ url, locals: { supabase } }) => {
           .eq('id', user.id)
           .maybeSingle();
 
+        const isAdmin = user.email === ADMIN_EMAIL;
+
         if (!profile) {
           await supabase.from('profiles').insert({
             id: user.id,
             email: user.email,
-            role: 'user'
+            role: isAdmin ? 'admin' : 'user'
           });
+        } else if (isAdmin && profile.role !== 'admin') {
+          await supabase
+            .from('profiles')
+            .update({ role: 'admin' })
+            .eq('id', user.id);
         }
       }
     }
