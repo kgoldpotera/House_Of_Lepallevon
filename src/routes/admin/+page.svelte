@@ -14,6 +14,9 @@
     image_url: '',
     in_stock: true
   };
+  let selectedFile: File | null = null;
+  let fileInput: HTMLInputElement;
+  let previewUrl = '';
 
   function openCreateForm() {
     editingBag = null;
@@ -24,6 +27,8 @@
       image_url: '',
       in_stock: true
     };
+    selectedFile = null;
+    previewUrl = '';
     showForm = true;
   }
 
@@ -36,12 +41,30 @@
       image_url: bag.image_url,
       in_stock: bag.in_stock
     };
+    selectedFile = null;
+    previewUrl = bag.image_url || '';
     showForm = true;
   }
 
   function closeForm() {
     showForm = false;
     editingBag = null;
+    selectedFile = null;
+    previewUrl = '';
+  }
+
+  function handleFileSelect(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    if (file) {
+      selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewUrl = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   async function handleLogout() {
@@ -109,6 +132,7 @@
                 };
               }}>
                 <input type="hidden" name="id" value={bag.id} />
+                <input type="hidden" name="image_url" value={bag.image_url} />
                 <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this bag?')">
                   Delete
                 </button>
@@ -137,6 +161,7 @@
       <form
         method="POST"
         action={editingBag ? '?/update' : '?/create'}
+        enctype="multipart/form-data"
         use:enhance={() => {
           return async ({ result }) => {
             if (result.type === 'success') {
@@ -148,6 +173,7 @@
       >
         {#if editingBag}
           <input type="hidden" name="id" value={editingBag.id} />
+          <input type="hidden" name="existing_image_url" value={editingBag.image_url} />
         {/if}
 
         <div class="form-group">
@@ -188,15 +214,24 @@
         </div>
 
         <div class="form-group">
-          <label for="image_url" class="form-label">Image URL</label>
+          <label for="image" class="form-label">
+            Bag Image {editingBag ? '(Leave empty to keep current image)' : ''}
+          </label>
           <input
-            type="url"
-            id="image_url"
-            name="image_url"
-            bind:value={formData.image_url}
-            class="form-input"
-            placeholder="https://example.com/image.jpg"
+            type="file"
+            id="image"
+            name="image"
+            bind:this={fileInput}
+            on:change={handleFileSelect}
+            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+            class="form-input-file"
           />
+
+          {#if previewUrl}
+            <div class="image-preview">
+              <img src={previewUrl} alt="Preview" class="preview-img" />
+            </div>
+          {/if}
         </div>
 
         <div class="form-group-checkbox">
@@ -588,6 +623,37 @@
 
   .form-textarea {
     resize: vertical;
+  }
+
+  .form-input-file {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px dashed #e0e0e0;
+    border-radius: 4px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .form-input-file:hover {
+    border-color: #c58e46;
+    background: #fafafa;
+  }
+
+  .image-preview {
+    margin-top: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 300px;
+  }
+
+  .preview-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .form-group-checkbox {
