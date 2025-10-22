@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { PageData } from './$types';
   import Footer from '$lib/components/Footer.svelte';
+  import { onMount } from 'svelte';
 
   export let data: PageData;
 
@@ -9,17 +10,42 @@
     {
       title: 'The House Reigns',
       subtitle: 'Luxury Handbags Collection',
-      image: 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=1920'
+      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Hero_image_1.jpeg'
     },
     {
       title: 'Elegance Redefined',
       subtitle: 'Crafted to Perfection',
-      image: 'https://images.pexels.com/photos/1038000/pexels-photo-1038000.jpeg?auto=compress&cs=tinysrgb&w=1920'
+      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Hero_image_2.jpeg'
     },
     {
       title: 'Timeless Beauty',
       subtitle: 'For the Modern Woman',
-      image: 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=1920'
+      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Hero_image_4.jpeg'
+    },
+    {
+      title: 'The Statement',
+      subtitle: 'Where Presence Speaks Louder Than Words',
+      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Statement.jpeg'
+    },
+    {
+      title: 'Our Collection',
+      subtitle: 'A Symphony of Craftsmanship and Luxury',
+      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Collection.jpeg'
+    },
+    {
+      title: 'By Appointment Only',
+      subtitle: 'An Exclusive Experience Awaits You',
+      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment.jpeg'
+    },
+    {
+      title: 'Love Language His Promises',
+      subtitle: 'Inspired by Devotion, Defined by Grace',
+      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Lovelangauge2.jpeg'
+    },
+    {
+      title: 'House of Lepallevon in Elegance',
+      subtitle: 'Where Every Design Whispers Sophistication',
+      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance.jpeg'
     }
   ];
 
@@ -32,8 +58,6 @@
   }
 
   let autoPlayInterval: ReturnType<typeof setInterval>;
-
-  import { onMount } from 'svelte';
 
   onMount(() => {
     autoPlayInterval = setInterval(nextSlide, 5000);
