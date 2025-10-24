@@ -22,31 +22,6 @@
       subtitle: 'For the Modern Woman',
       image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Hero_image_4.jpeg'
     },
-    {
-      title: 'The Statement',
-      subtitle: 'Where Presence Speaks Louder Than Words',
-      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Statement.jpeg'
-    },
-    {
-      title: 'Our Collection',
-      subtitle: 'A Symphony of Craftsmanship and Luxury',
-      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Collection.jpeg'
-    },
-    {
-      title: 'By Appointment Only',
-      subtitle: 'An Exclusive Experience Awaits You',
-      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment.jpeg'
-    },
-    {
-      title: 'Love Language His Promises',
-      subtitle: 'Inspired by Devotion, Defined by Grace',
-      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Lovelangauge2.jpeg'
-    },
-    {
-      title: 'House of Lepallevon in Elegance',
-      subtitle: 'Where Every Design Whispers Sophistication',
-      image: 'https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance.jpeg'
-    }
   ];
 
   function nextSlide() {
@@ -94,6 +69,7 @@
   </header>
 
   <main>
+    <!-- HERO SECTION -->
     <section class="hero">
       {#each slides as slide, i}
         <div class="hero-slide" class:active={currentSlide === i} style="background-image: url({slide.image})">
@@ -125,6 +101,7 @@
       </div>
     </section>
 
+    <!-- THE STATEMENT -->
     <section class="featured-section">
       <div class="container">
         <h2 class="section-title">The Statement</h2>
@@ -132,22 +109,23 @@
         <div class="image-slider">
           <div class="image-track">
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="The Statement 1" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_1.jpeg" alt="The Statement 1" />
             </div>
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="The Statement 2" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_2.jpeg" alt="The Statement 2" />
             </div>
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="The Statement 3" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_3.jpeg" alt="The Statement 3" />
             </div>
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="The Statement 4" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_4.jpeg" alt="The Statement 4" />
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- BY APPOINTMENT -->
     <section class="featured-section alt">
       <div class="container">
         <h2 class="section-title">By Appointment Only</h2>
@@ -155,45 +133,40 @@
         <div class="image-slider">
           <div class="image-track">
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="By Appointment 1" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_1.jpeg" alt="By Appointment 1" />
             </div>
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="By Appointment 2" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_2.jpeg" alt="By Appointment 2" />
             </div>
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="By Appointment 3" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_3.jpeg" alt="By Appointment 3" />
             </div>
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="By Appointment 4" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_4.jpeg" alt="By Appointment 4" />
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="featured-section">
-      <div class="container">
-        <h2 class="section-title">Love Language His Promises</h2>
-        <p class="section-description">Inspired by devotion, defined by grace. Every design tells a story of commitment and timeless beauty, crafted to honor the promises that matter most.</p>
-        <div class="image-slider">
-          <div class="image-track">
-            <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Love Language 1" />
-            </div>
-            <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Love Language 2" />
-            </div>
-            <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Love Language 3" />
-            </div>
-            <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Love Language 4" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <!-- LOVE LANGUAGE (STATIC IMAGE NOW) -->
+<section class="featured-section">
+  <div class="container">
+    <h2 class="section-title">Love Language His Promises</h2>
+    <p class="section-description">
+      Inspired by devotion, defined by grace. Every design tells a story of commitment and timeless beauty, crafted to honor the promises that matter most.
+    </p>
+    <div class="single-image">
+      <img
+        src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Love_language_his_promise.jpeg"
+        alt="Love Language His Promises"
+      />
+    </div>
+  </div>
+</section>
 
+
+    <!-- ELEGANCE SECTION -->
     <section class="featured-section alt">
       <div class="container">
         <h2 class="section-title">House of Lepallevon in Elegance</h2>
@@ -201,22 +174,23 @@
         <div class="image-slider">
           <div class="image-track">
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Elegance 1" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_1.jpeg" alt="Elegance 1" />
             </div>
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Elegance 2" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_2.jpeg" alt="Elegance 2" />
             </div>
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Elegance 3" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_3.jpeg" alt="Elegance 3" />
             </div>
             <div class="slide-image">
-              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Elegance 4" />
+              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_4.jpeg" alt="Elegance 4" />
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- PRODUCTS SECTION -->
     <section id="products" class="products">
       <div class="container">
         <h2 class="section-title">Our Collection</h2>
@@ -559,6 +533,41 @@
   .slide-image:hover img {
     transform: scale(1.05);
   }
+
+  .single-image {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.single-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.single-image:hover img {
+  transform: scale(1.02);
+}
+
+@media (max-width: 768px) {
+  .single-image {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .single-image {
+    max-width: 100%;
+    border-radius: 2px;
+  }
+}
+
 
   .products {
     padding: 96px 0;
