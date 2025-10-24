@@ -125,6 +125,98 @@
       </div>
     </section>
 
+    <section class="featured-section">
+      <div class="container">
+        <h2 class="section-title">The Statement</h2>
+        <p class="section-description">Where presence speaks louder than words. Each piece is crafted to make an unforgettable impression, embodying confidence and refined sophistication.</p>
+        <div class="image-slider">
+          <div class="image-track">
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="The Statement 1" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="The Statement 2" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="The Statement 3" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="The Statement 4" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="featured-section alt">
+      <div class="container">
+        <h2 class="section-title">By Appointment Only</h2>
+        <p class="section-description">An exclusive experience tailored to you. Discover our collection in an intimate setting where every detail is curated for your personal journey.</p>
+        <div class="image-slider">
+          <div class="image-track">
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="By Appointment 1" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="By Appointment 2" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="By Appointment 3" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="By Appointment 4" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="featured-section">
+      <div class="container">
+        <h2 class="section-title">Love Language His Promises</h2>
+        <p class="section-description">Inspired by devotion, defined by grace. Every design tells a story of commitment and timeless beauty, crafted to honor the promises that matter most.</p>
+        <div class="image-slider">
+          <div class="image-track">
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Love Language 1" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Love Language 2" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Love Language 3" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Love Language 4" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="featured-section alt">
+      <div class="container">
+        <h2 class="section-title">House of Lepallevon in Elegance</h2>
+        <p class="section-description">Where every design whispers sophistication. A celebration of artistry and refinement, where tradition meets contemporary luxury in perfect harmony.</p>
+        <div class="image-slider">
+          <div class="image-track">
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Elegance 1" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Elegance 2" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Elegance 3" />
+            </div>
+            <div class="slide-image">
+              <img src="https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Elegance 4" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="products" class="products">
       <div class="container">
         <h2 class="section-title">Our Collection</h2>
@@ -390,6 +482,84 @@
     border-radius: 6px;
   }
 
+  .featured-section {
+    padding: 80px 0;
+    background: white;
+  }
+
+  .featured-section.alt {
+    background: #fafafa;
+  }
+
+  .section-description {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #666;
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 48px auto;
+    letter-spacing: 0.3px;
+  }
+
+  .image-slider {
+    overflow: hidden;
+    position: relative;
+    padding: 24px 0;
+  }
+
+  .image-track {
+    display: flex;
+    gap: 24px;
+    animation: scroll 30s linear infinite;
+  }
+
+  .image-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-25% - 24px));
+    }
+  }
+
+  .slide-image {
+    flex: 0 0 calc(25% - 18px);
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+  }
+
+  .slide-image:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .slide-image::before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+  }
+
+  .slide-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .slide-image:hover img {
+    transform: scale(1.05);
+  }
+
   .products {
     padding: 96px 0;
     background: #fafafa;
@@ -557,6 +727,28 @@
       right: 16px;
     }
 
+    .featured-section {
+      padding: 56px 0;
+    }
+
+    .section-description {
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .slide-image {
+      flex: 0 0 calc(50% - 12px);
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-50% - 24px));
+      }
+    }
+
     .products {
       padding: 64px 0;
     }
@@ -585,8 +777,30 @@
       font-size: 14px;
     }
 
+    .featured-section {
+      padding: 48px 0;
+    }
+
     .section-title {
       font-size: 26px;
+    }
+
+    .section-description {
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .slide-image {
+      flex: 0 0 calc(70% - 12px);
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-70% - 24px));
+      }
     }
   }
 </style>
