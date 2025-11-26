@@ -45,6 +45,6 @@ declare module "$app/types" {
 		};
 		Pathname(): "/" | "/admin" | "/admin/" | "/api" | "/api/" | "/api/appointment" | "/api/appointment/" | "/auth" | "/auth/" | "/auth/callback" | "/auth/callback/" | "/auth/login" | "/auth/login/" | "/auth/logout" | "/auth/logout/" | "/info" | "/info/" | `/info/${string}` & {} | `/info/${string}/` & {};
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
-		Asset(): string & {};
+		Asset(): "/WhatsApp Video 2025-11-26 at 8.48.16 PM.mp4" | string & {};
 	}
 }

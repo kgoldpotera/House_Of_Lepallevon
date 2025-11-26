@@ -165,6 +165,17 @@
   </div>
 </section>
 
+<section class="video-section">
+  <div class="container">
+    <div class="video-wrapper">
+      <video controls playsinline>
+        <source src="/campaign-video.mp4" type="video/mp4" />
+        <p>Your browser does not support the video tag.</p>
+      </video>
+    </div>
+  </div>
+</section>
+
 <section id="products" class="products">
   <div class="container">
     <h2 class="section-title">Our Collection</h2>
@@ -460,6 +471,27 @@
     transform: scale(1.02);
   }
 
+  /* --- NEW VIDEO SECTION STYLES --- */
+  .video-section {
+    padding: 80px 0;
+    background: #ffffff;
+  }
+
+  .video-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: #f5f5f5; /* Added background so you can see if it loads */
+  }
+
+  .video-wrapper video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
   .products {
     padding: 96px 0;
     background: #fafafa;
@@ -651,6 +683,10 @@
     .single-image {
       max-width: 90%;
     }
+
+    .video-section {
+      padding: 56px 0;
+    }
   }
 
   @media (max-width: 480px) {
@@ -698,19 +734,19 @@
     }
 
     .appointment-section {
-  padding: 80px 0;
-  background: #fafafa;
-}
+      padding: 80px 0;
+      background: #fafafa;
+    }
 
-.appointment-section .section-title {
-  margin-bottom: 24px;
-}
+    .appointment-section .section-title {
+      margin-bottom: 24px;
+    }
 
-.appointment-section .section-description {
-  margin-bottom: 40px;
-  font-size: 16px;
-  color: #555;
-}
+    .appointment-section .section-description {
+      margin-bottom: 40px;
+      font-size: 16px;
+      color: #555;
+    }
 
   }
 </style>
