@@ -31,7 +31,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
     const result = await resend.emails.send({
       from: "Appointments <appointments@neemacarellc.org>",
-      to: ["koechmanoah32@gmail.com"],
+      to: ["Concierge@houseofLepallevon.com"],
       subject: "New Appointment Request",
       html: `
                 <h2>New Appointment Booking</h2>
