@@ -27,13 +27,15 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/admin" | "/auth" | "/auth/callback" | "/auth/login" | "/auth/logout" | "/info" | "/info/[slug]";
+		RouteId(): "/" | "/admin" | "/api" | "/api/appointment" | "/auth" | "/auth/callback" | "/auth/login" | "/auth/logout" | "/info" | "/info/[slug]";
 		RouteParams(): {
 			"/info/[slug]": { slug: string }
 		};
 		LayoutParams(): {
 			"/": { slug?: string };
 			"/admin": Record<string, never>;
+			"/api": Record<string, never>;
+			"/api/appointment": Record<string, never>;
 			"/auth": Record<string, never>;
 			"/auth/callback": Record<string, never>;
 			"/auth/login": Record<string, never>;
@@ -41,7 +43,7 @@ declare module "$app/types" {
 			"/info": { slug?: string };
 			"/info/[slug]": { slug: string }
 		};
-		Pathname(): "/" | "/admin" | "/admin/" | "/auth" | "/auth/" | "/auth/callback" | "/auth/callback/" | "/auth/login" | "/auth/login/" | "/auth/logout" | "/auth/logout/" | "/info" | "/info/" | `/info/${string}` & {} | `/info/${string}/` & {};
+		Pathname(): "/" | "/admin" | "/admin/" | "/api" | "/api/" | "/api/appointment" | "/api/appointment/" | "/auth" | "/auth/" | "/auth/callback" | "/auth/callback/" | "/auth/login" | "/auth/login/" | "/auth/logout" | "/auth/logout/" | "/info" | "/info/" | `/info/${string}` & {} | `/info/${string}/` & {};
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): string & {};
 	}

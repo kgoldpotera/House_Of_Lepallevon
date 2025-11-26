@@ -5,6 +5,10 @@
 
   export let data: PageData;
 
+  // State for tab navigation
+  let activeTab: 'products' | 'users' = 'products'; 
+
+  // State for form/modal
   let showForm = false;
   let editingBag: any = null;
   let formData = {
@@ -17,6 +21,8 @@
   let selectedFile: File | null = null;
   let fileInput: HTMLInputElement;
   let previewUrl = '';
+
+  // --- Helper Functions ---
 
   function openCreateForm() {
     editingBag = null;
@@ -67,10 +73,21 @@
     }
   }
 
-  async function handleLogout() {
-    await fetch('/auth/logout', { method: 'POST' });
-    window.location.href = '/';
-  }
+  // Handle form submission completion (used for both product and user actions)
+  const handleEnhance = () => {
+    return async ({ result }) => {
+      if (result.type === 'success') {
+        closeForm();
+        await invalidateAll();
+      }
+      if (result.type === 'failure' && result.data?.error) {
+        // Simple error feedback: log to console or display a toast notification
+        console.error("Action Failed:", result.data.error);
+        alert(`Error: ${result.data.error}`); 
+      }
+    };
+  };
+
 </script>
 
 <svelte:head>
@@ -80,75 +97,125 @@
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 </svelte:head>
 
-<div class="page-wrapper">
-  <header class="header">
-    <div class="header-content">
-      <nav class="nav">
-        <a href="/" class="logo">HOUSE OF LE PALLEVON</a>
-        <div class="nav-links">
-          <span class="nav-text">Admin: {data.profile?.email}</span>
-          <button on:click={handleLogout} class="nav-link btn-logout">Logout</button>
+<main class="admin-page">
+  <div class="container">
+    <div class="admin-header">
+      <h1 class="page-title">{activeTab === 'products' ? 'Bag Management' : 'User Management'}</h1>
+      <div class="header-actions">
+          <div class="tab-controls">
+              <button class="tab-btn" class:active={activeTab === 'products'} on:click={() => activeTab = 'products'}>Products</button>
+              <button class="tab-btn" class:active={activeTab === 'users'} on:click={() => activeTab = 'users'}>Users</button>
+          </div>
+          {#if activeTab === 'products'}
+              <button on:click={openCreateForm} class="btn-primary">Add New Bag</button>
+          {/if}
+      </div>
+    </div>
+    
+    {#if activeTab === 'products'}
+      <div class="table-wrapper">
+        <div class="bags-table">
+          <div class="bag-row table-header">
+            <div class="bag-image-cell">Image</div>
+            <div class="bag-info-cell">Product Details</div>
+            <div class="bag-price-cell">Price</div>
+            <div class="bag-stock-cell">Stock</div>
+            <div class="bag-actions-cell">Actions</div>
+          </div>
+
+          {#each data.bags as bag}
+            <div class="bag-row">
+              <div class="bag-image-cell" data-label="Image">
+                <img
+                  src={bag.image_url || 'https://via.placeholder.com/80/f5f5f5?text=No+Image'}
+                  alt={bag.name}
+                  class="bag-thumbnail"
+                />
+              </div>
+              <div class="bag-info-cell" data-label="Details">
+                <h3 class="bag-name">{bag.name}</h3>
+                <p class="bag-description">{bag.description}</p>
+              </div>
+              <div class="bag-price-cell" data-label="Price">
+                <span class="bag-price">${bag.price}</span>
+              </div>
+              <div class="bag-stock-cell" data-label="Stock">
+                <span class="stock-badge" class:in-stock={bag.in_stock} class:out-of-stock={!bag.in_stock}>
+                  {bag.in_stock ? 'In Stock' : 'Out of Stock'}
+                </span>
+              </div>
+              <div class="bag-actions-cell" data-label="Actions">
+                <button on:click={() => openEditForm(bag)} class="btn-edit">Edit</button>
+                <form method="POST" action="?/delete" use:enhance={handleEnhance()}>
+                  <input type="hidden" name="id" value={bag.id} />
+                  <input type="hidden" name="image_url" value={bag.image_url} />
+                  <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this bag?')">
+                    Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          {:else}
+            <div class="no-bags">
+              <p>No bags in the collection yet.</p>
+              <button on:click={openCreateForm} class="btn-secondary">Add Your First Bag</button>
+            </div>
+          {/each}
         </div>
-      </nav>
-    </div>
-  </header>
-
-  <main class="admin-page">
-    <div class="container">
-      <div class="admin-header">
-        <h1 class="page-title">Bag Management</h1>
-        <button on:click={openCreateForm} class="btn-primary">Add New Bag</button>
       </div>
+    {/if}
 
-      <div class="bags-table">
-        {#each data.bags as bag}
-          <div class="bag-row">
-            <div class="bag-image-cell">
-              <img
-                src={bag.image_url || 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=200'}
-                alt={bag.name}
-                class="bag-thumbnail"
-              />
+    {#if activeTab === 'users'}
+        <div class="table-wrapper">
+            <div class="bags-table user-table">
+                <div class="user-row table-header">
+                    <div class="user-email-cell">Email</div>
+                    <div class="user-role-cell">Role</div>
+                    <div class="user-date-cell">Joined</div>
+                    <div class="user-actions-cell">Action</div>
+                </div>
+
+                {#each data.users as user}
+                    <div class="user-row">
+                        <div class="user-email-cell" data-label="Email">
+                            <span class="bag-name">{user.email}</span>
+                            {#if user.email === data.userEmail}
+                                <span class="current-user-badge">(You)</span>
+                            {/if}
+                        </div>
+                        <div class="user-role-cell" data-label="Role">
+                            <span class="stock-badge" class:in-stock={user.role === 'admin'}>
+                                {user.role.toUpperCase()}
+                            </span>
+                        </div>
+                        <div class="user-date-cell" data-label="Joined">
+                            {new Date(user.created_at).toLocaleDateString()}
+                        </div>
+                        <div class="user-actions-cell" data-label="Action">
+                            {#if user.email !== data.userEmail}
+                                <form method="POST" action="?/promoteUser" use:enhance={handleEnhance()}>
+                                    <input type="hidden" name="user_id" value={user.id} />
+                                    <input type="hidden" name="current_role" value={user.role} />
+                                    <button 
+                                        type="submit" 
+                                        class="btn-secondary btn-sm"
+                                        onclick="return confirm(`Are you sure you want to ${user.role === 'admin' ? 'DEMOTE' : 'PROMOTE'} ${user.email}?`)"
+                                    >
+                                        {user.role === 'admin' ? 'Demote' : 'Promote'}
+                                    </button>
+                                </form>
+                            {:else}
+                                <span class="no-action-text">N/A</span>
+                            {/if}
+                        </div>
+                    </div>
+                {/each}
             </div>
-            <div class="bag-info-cell">
-              <h3 class="bag-name">{bag.name}</h3>
-              <p class="bag-description">{bag.description}</p>
-            </div>
-            <div class="bag-price-cell">
-              <span class="bag-price">${bag.price}</span>
-            </div>
-            <div class="bag-stock-cell">
-              <span class="stock-badge" class:in-stock={bag.in_stock} class:out-of-stock={!bag.in_stock}>
-                {bag.in_stock ? 'In Stock' : 'Out of Stock'}
-              </span>
-            </div>
-            <div class="bag-actions-cell">
-              <button on:click={() => openEditForm(bag)} class="btn-edit">Edit</button>
-              <form method="POST" action="?/delete" use:enhance={() => {
-                return async ({ result }) => {
-                  if (result.type === 'success') {
-                    await invalidateAll();
-                  }
-                };
-              }}>
-                <input type="hidden" name="id" value={bag.id} />
-                <input type="hidden" name="image_url" value={bag.image_url} />
-                <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this bag?')">
-                  Delete
-                </button>
-              </form>
-            </div>
-          </div>
-        {:else}
-          <div class="no-bags">
-            <p>No bags in the collection yet.</p>
-            <button on:click={openCreateForm} class="btn-secondary">Add Your First Bag</button>
-          </div>
-        {/each}
-      </div>
-    </div>
-  </main>
-</div>
+        </div>
+    {/if}
+    
+  </div>
+</main>
 
 {#if showForm}
   <div class="modal-overlay" on:click={closeForm}>
@@ -162,14 +229,7 @@
         method="POST"
         action={editingBag ? '?/update' : '?/create'}
         enctype="multipart/form-data"
-        use:enhance={() => {
-          return async ({ result }) => {
-            if (result.type === 'success') {
-              closeForm();
-              await invalidateAll();
-            }
-          };
-        }}
+        use:enhance={handleEnhance()}
       >
         {#if editingBag}
           <input type="hidden" name="id" value={editingBag.id} />
@@ -225,6 +285,7 @@
             on:change={handleFileSelect}
             accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
             class="form-input-file"
+            required={!editingBag}
           />
 
           {#if previewUrl}
@@ -257,88 +318,15 @@
 {/if}
 
 <style>
-  :global(body) {
-    margin: 0;
-    padding: 0;
-    font-family: 'DM Sans', sans-serif;
-    color: #333;
-    line-height: 1.6;
-  }
+  /* Base styles should be in +layout.svelte, but keeping page styles here for clarity */
 
-  :global(*) {
-    box-sizing: border-box;
-  }
-
-  .page-wrapper {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: #fafafa;
-  }
-
-  .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  }
-
-  .header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-  }
-
-  .logo {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-decoration: none;
-    color: #1a1a1a;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-  }
-
-  .nav-text {
-    font-size: 14px;
-    color: #c58e46;
-    font-weight: 600;
-  }
-
-  .btn-logout {
-    background: none;
-    border: none;
-    padding: 8px 16px;
-    color: #666;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: color 0.3s ease;
-  }
-
-  .btn-logout:hover {
-    color: #c58e46;
-  }
+  /* Removed .page-wrapper and .header styles as they conflict with +layout.svelte */
 
   .admin-page {
     flex: 1;
-    padding: 120px 24px 60px;
+    padding: 60px 24px; /* Reduced top padding as header is handled by layout */
+    background: #fafafa;
+    min-height: calc(100vh - 80px); /* Ensure page fills viewport below header */
   }
 
   .container {
@@ -351,6 +339,15 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px;
+    flex-wrap: wrap; /* Added for responsiveness */
+    gap: 20px;
+  }
+  
+  .header-actions {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
   }
 
   .page-title {
@@ -359,46 +356,180 @@
     margin: 0;
     color: #1a1a1a;
   }
+  
+  /* TAB CONTROLS */
+  .tab-controls {
+      display: flex;
+      border-bottom: 2px solid #e0e0e0;
+  }
+  
+  .tab-btn {
+      background: none;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      color: #666;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease;
+      margin-bottom: -2px; /* Pulls button down to cover border */
+  }
+  
+  .tab-btn:hover {
+      color: #1a1a1a;
+  }
 
-  .btn-primary {
-    padding: 12px 32px;
+  .tab-btn.active {
+      color: #c58e46;
+      border-bottom-color: #c58e46;
+      font-weight: 600;
+  }
+
+  .btn-primary, .btn-secondary, .btn-edit, .btn-delete, .btn-cancel, .btn-submit {
+      /* Shared button base styles */
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+  }
+
+  .btn-primary, .btn-submit {
     background: #c58e46;
     color: white;
     border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    font-family: 'DM Sans', sans-serif;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    transition: all 0.3s ease;
   }
 
-  .btn-primary:hover {
+  .btn-primary:hover, .btn-submit:hover {
     background: #b57d35;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(197, 142, 70, 0.3);
   }
 
-  .bags-table {
+  .btn-secondary {
+    background: white;
+    color: #c58e46;
+    border: 2px solid #c58e46;
+  }
+
+  .btn-secondary:hover {
+    background: #c58e46;
+    color: white;
+  }
+  
+  /* TABLE STYLES - Mobile-first grid layout */
+
+  .table-wrapper {
     background: white;
     border-radius: 8px;
-    overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
   }
 
-  .bag-row {
+  .bags-table {
     display: grid;
-    grid-template-columns: 100px 1fr 120px 120px 180px;
-    gap: 24px;
-    align-items: center;
-    padding: 20px 24px;
+    /* Define desktop grid columns */
+    grid-template-columns: 1fr;
+  }
+  
+  .bag-row, .user-row {
     border-bottom: 1px solid #f0f0f0;
+    padding: 15px 24px;
+    display: grid;
+    /* Default to single column mobile layout */
+    grid-template-columns: 1fr; 
+    gap: 10px;
   }
 
-  .bag-row:last-child {
+  .bag-row:last-child, .user-row:last-child {
     border-bottom: none;
   }
+
+  /* Desktop View */
+  @media (min-width: 1024px) {
+    .bags-table, .user-table {
+        /* Add table header row styles */
+        grid-template-columns: 1fr;
+    }
+    
+    .bag-row, .user-row {
+        /* Define responsive columns for desktop */
+        grid-template-columns: 80px 1.5fr 120px 100px 180px; 
+        gap: 24px;
+        align-items: center;
+        padding: 20px 24px;
+    }
+    
+    .user-table .user-row {
+        grid-template-columns: 1.5fr 120px 150px 120px; 
+    }
+    
+    .bag-row > div::before, .user-row > div::before {
+        /* Hide mobile labels on desktop */
+        content: none;
+    }
+    
+    .table-header {
+        font-weight: 600;
+        background: #f9f9f9;
+        color: #333;
+        font-size: 14px;
+        padding: 12px 24px;
+        border-bottom: 1px solid #e0e0e0;
+        /* Ensure table header uses same grid as rows */
+        display: grid; 
+    }
+  }
+
+  /* Mobile View - Specific cell styling */
+  @media (max-width: 1023px) {
+      .bag-row > div, .user-row > div {
+          /* Hide grid display of table header on mobile */
+          display: block; 
+          padding: 5px 0;
+      }
+      
+      .table-header {
+          display: none !important; /* Hide explicit header row on small screens */
+      }
+      
+      .bag-row > div::before, .user-row > div::before {
+          content: attr(data-label);
+          font-weight: 700;
+          display: inline-block;
+          width: 80px;
+          min-width: 80px;
+          color: #666;
+          font-size: 13px;
+          margin-right: 10px;
+      }
+      
+      .bag-image-cell, .bag-actions-cell, .user-actions-cell {
+          /* Make image and action cells take full width in mobile */
+          grid-column: 1 / -1; 
+      }
+      
+      .bag-actions-cell, .user-actions-cell {
+          display: flex;
+          gap: 10px;
+          padding-top: 15px;
+          border-top: 1px dashed #eee;
+      }
+      
+      .btn-edit, .btn-delete, .btn-secondary {
+          flex: 1;
+      }
+      
+      .bag-price-cell, .bag-stock-cell {
+          /* Center content alignment fix */
+          text-align: left !important;
+      }
+  }
+  
+  /* PRODUCT SPECIFIC CELLS */
 
   .bag-image-cell {
     width: 80px;
@@ -406,6 +537,16 @@
     border-radius: 4px;
     overflow: hidden;
     background: #f5f5f5;
+  }
+  
+  @media (max-width: 1023px) {
+      .bag-image-cell {
+          /* In mobile view, the image cell is inline with the label */
+          width: 60px;
+          height: 60px;
+          display: inline-block;
+          margin-left: 90px;
+      }
   }
 
   .bag-thumbnail {
@@ -473,67 +614,28 @@
     display: flex;
     gap: 8px;
   }
-
-  .btn-edit {
-    padding: 8px 16px;
-    background: #2196f3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  
+  /* USER SPECIFIC CELLS */
+  
+  .user-table .bag-name {
+      font-size: 16px;
+      font-family: 'DM Sans', sans-serif;
   }
 
-  .btn-edit:hover {
-    background: #1976d2;
+  .current-user-badge {
+      font-size: 12px;
+      color: #c58e46;
+      font-weight: 600;
+      margin-left: 8px;
+  }
+  
+  .no-action-text {
+      color: #999;
+      font-style: italic;
+      font-size: 14px;
   }
 
-  .btn-delete {
-    padding: 8px 16px;
-    background: #f44336;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-
-  .btn-delete:hover {
-    background: #d32f2f;
-  }
-
-  .no-bags {
-    padding: 80px 24px;
-    text-align: center;
-  }
-
-  .no-bags p {
-    font-size: 18px;
-    color: #666;
-    margin: 0 0 24px 0;
-  }
-
-  .btn-secondary {
-    padding: 12px 32px;
-    background: white;
-    color: #c58e46;
-    border: 2px solid #c58e46;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .btn-secondary:hover {
-    background: #c58e46;
-    color: white;
-  }
-
+  /* MODAL STYLES (Kept as is for functionality) */
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -547,7 +649,9 @@
     z-index: 2000;
     padding: 24px;
   }
-
+  
+  /* ... rest of your modal styles ... */
+  
   .modal {
     background: white;
     border-radius: 8px;
@@ -557,7 +661,9 @@
     overflow-y: auto;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   }
-
+  
+  /* ... (Include all other modal styles: modal-header, form-group, etc.) ... */
+  
   .modal-header {
     display: flex;
     justify-content: space-between;
@@ -581,10 +687,6 @@
     cursor: pointer;
     line-height: 1;
     transition: color 0.3s ease;
-  }
-
-  .btn-close:hover {
-    color: #333;
   }
 
   .modal form {
@@ -682,7 +784,7 @@
     padding-top: 24px;
     border-top: 1px solid #f0f0f0;
   }
-
+  
   .btn-cancel {
     padding: 12px 24px;
     background: white;
@@ -693,84 +795,5 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-  }
-
-  .btn-cancel:hover {
-    background: #f5f5f5;
-    border-color: #ccc;
-  }
-
-  .btn-submit {
-    padding: 12px 24px;
-    background: #c58e46;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .btn-submit:hover {
-    background: #b57d35;
-  }
-
-  @media (max-width: 1024px) {
-    .bag-row {
-      grid-template-columns: 80px 1fr 100px 100px 160px;
-      gap: 16px;
-      padding: 16px 20px;
-    }
-
-    .bag-image-cell {
-      width: 60px;
-      height: 60px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .logo {
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
-
-    .admin-page {
-      padding: 100px 16px 40px;
-    }
-
-    .admin-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 20px;
-    }
-
-    .page-title {
-      font-size: 28px;
-    }
-
-    .bag-row {
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    .bag-image-cell {
-      width: 100%;
-      height: 200px;
-    }
-
-    .bag-price-cell,
-    .bag-stock-cell {
-      text-align: left;
-    }
-
-    .bag-actions-cell {
-      width: 100%;
-    }
-
-    .btn-edit,
-    .btn-delete {
-      flex: 1;
-    }
   }
 </style>

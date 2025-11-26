@@ -2,9 +2,12 @@
   import type { PageData } from './$types';
   import Footer from '$lib/components/Footer.svelte';
   import { onMount } from 'svelte';
+  import AppointmentForm from '$lib/components/AppointmentForm.svelte';
+
 
   export let data: PageData;
 
+  // --- SLIDER LOGIC ---
   let currentSlide = 0;
   const slides = [
     {
@@ -47,109 +50,83 @@
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 </svelte:head>
 
-<div class="page-wrapper">
-  <header class="header">
-    <div class="header-content">
-      <nav class="nav">
-        <a href="/" class="logo">HOUSE OF LE PALLEVON</a>
-        <div class="nav-links">
-          {#if data.profile?.role === 'admin'}
-            <a href="/admin" class="nav-link">Admin Dashboard</a>
-          {/if}
-          {#if data.session}
-            <form action="/auth/logout" method="POST" style="display: inline;">
-              <button type="submit" class="nav-link btn-logout">Logout</button>
-            </form>
-          {:else}
-            <a href="/auth/login" class="nav-link">Account</a>
-          {/if}
-        </div>
-      </nav>
+<section class="hero">
+  {#each slides as slide, i}
+    <div class="hero-slide" class:active={currentSlide === i} style="background-image: url({slide.image})">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <h1 class="hero-title">{slide.title}</h1>
+        <p class="hero-subtitle">{slide.subtitle}</p>
+        <a href="#products" class="btn-primary">Discover</a>
+      </div>
     </div>
-  </header>
+  {/each}
 
-  <main>
-    <!-- HERO SECTION -->
-    <section class="hero">
-      {#each slides as slide, i}
-        <div class="hero-slide" class:active={currentSlide === i} style="background-image: url({slide.image})">
-          <div class="hero-overlay"></div>
-          <div class="hero-content">
-            <h1 class="hero-title">{slide.title}</h1>
-            <p class="hero-subtitle">{slide.subtitle}</p>
-            <a href="#products" class="btn-primary">Discover</a>
-          </div>
+  <button class="slider-btn slider-btn-prev" on:click={prevSlide} aria-label="Previous slide">
+    &#8249;
+  </button>
+  <button class="slider-btn slider-btn-next" on:click={nextSlide} aria-label="Next slide">
+    &#8250;
+  </button>
+
+  <div class="slider-dots">
+    {#each slides as _, i}
+      <button
+        class="dot"
+        class:active={currentSlide === i}
+        on:click={() => currentSlide = i}
+        aria-label="Go to slide {i + 1}"
+      ></button>
+    {/each}
+  </div>
+</section>
+
+<section class="featured-section">
+  <div class="container">
+    <h2 class="section-title">The Statement</h2>
+    <p class="section-description">Where presence speaks louder than words. Each piece is crafted to make an unforgettable impression, embodying confidence and refined sophistication.</p>
+    <div class="image-slider">
+      <div class="image-track">
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_1.jpeg" alt="The Statement 1" />
         </div>
-      {/each}
-
-      <button class="slider-btn slider-btn-prev" on:click={prevSlide} aria-label="Previous slide">
-        &#8249;
-      </button>
-      <button class="slider-btn slider-btn-next" on:click={nextSlide} aria-label="Next slide">
-        &#8250;
-      </button>
-
-      <div class="slider-dots">
-        {#each slides as _, i}
-          <button
-            class="dot"
-            class:active={currentSlide === i}
-            on:click={() => currentSlide = i}
-            aria-label="Go to slide {i + 1}"
-          ></button>
-        {/each}
-      </div>
-    </section>
-
-    <!-- THE STATEMENT -->
-    <section class="featured-section">
-      <div class="container">
-        <h2 class="section-title">The Statement</h2>
-        <p class="section-description">Where presence speaks louder than words. Each piece is crafted to make an unforgettable impression, embodying confidence and refined sophistication.</p>
-        <div class="image-slider">
-          <div class="image-track">
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_1.jpeg" alt="The Statement 1" />
-            </div>
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_2.jpeg" alt="The Statement 2" />
-            </div>
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_3.jpeg" alt="The Statement 3" />
-            </div>
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_4.jpeg" alt="The Statement 4" />
-            </div>
-          </div>
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_2.jpeg" alt="The Statement 2" />
+        </div>
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_3.jpeg" alt="The Statement 3" />
+        </div>
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/The_statement_4.jpeg" alt="The Statement 4" />
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- BY APPOINTMENT -->
-    <section class="featured-section alt">
-      <div class="container">
-        <h2 class="section-title">By Appointment Only</h2>
-        <p class="section-description">An exclusive experience tailored to you. Discover our collection in an intimate setting where every detail is curated for your personal journey.</p>
-        <div class="image-slider">
-          <div class="image-track">
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_1.jpeg" alt="By Appointment 1" />
-            </div>
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_2.jpeg" alt="By Appointment 2" />
-            </div>
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_3.jpeg" alt="By Appointment 3" />
-            </div>
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_4.jpeg" alt="By Appointment 4" />
-            </div>
-          </div>
+<section class="featured-section alt">
+  <div class="container">
+    <h2 class="section-title">By Appointment Only</h2>
+    <p class="section-description">An exclusive experience tailored to you. Discover our collection in an intimate setting where every detail is curated for your personal journey.</p>
+    <div class="image-slider">
+      <div class="image-track">
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_1.jpeg" alt="By Appointment 1" />
+        </div>
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_2.jpeg" alt="By Appointment 2" />
+        </div>
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_3.jpeg" alt="By Appointment 3" />
+        </div>
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Appointment_4.jpeg" alt="By Appointment 4" />
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-    <!-- LOVE LANGUAGE (STATIC IMAGE NOW) -->
 <section class="featured-section">
   <div class="container">
     <h2 class="section-title">Love Language His Promises</h2>
@@ -165,146 +142,74 @@
   </div>
 </section>
 
+<section class="featured-section alt">
+  <div class="container">
+    <h2 class="section-title">House of Lepallevon in Elegance</h2>
+    <p class="section-description">Where every design whispers sophistication. A celebration of artistry and refinement, where tradition meets contemporary luxury in perfect harmony.</p>
+    <div class="image-slider">
+      <div class="image-track">
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_1.jpeg" alt="Elegance 1" />
+        </div>
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_2.jpeg" alt="Elegance 2" />
+        </div>
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_3.jpeg" alt="Elegance 3" />
+        </div>
+        <div class="slide-image">
+          <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_4.jpeg" alt="Elegance 4" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- ELEGANCE SECTION -->
-    <section class="featured-section alt">
-      <div class="container">
-        <h2 class="section-title">House of Lepallevon in Elegance</h2>
-        <p class="section-description">Where every design whispers sophistication. A celebration of artistry and refinement, where tradition meets contemporary luxury in perfect harmony.</p>
-        <div class="image-slider">
-          <div class="image-track">
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_1.jpeg" alt="Elegance 1" />
-            </div>
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_2.jpeg" alt="Elegance 2" />
-            </div>
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_3.jpeg" alt="Elegance 3" />
-            </div>
-            <div class="slide-image">
-              <img src="https://pqylccqvrhdphidyzbfl.supabase.co/storage/v1/object/public/bag-images/Elegance_4.jpeg" alt="Elegance 4" />
-            </div>
+<section id="products" class="products">
+  <div class="container">
+    <h2 class="section-title">Our Collection</h2>
+
+    <div class="products-grid">
+      {#each data.bags as bag}
+        <div class="product-card">
+          <div class="product-image-wrapper">
+            <img src={bag.image_url || 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600'} alt={bag.name} class="product-image" />
+            {#if !bag.in_stock}
+              <div class="out-of-stock-badge">Out of Stock</div>
+            {/if}
+          </div>
+          <div class="product-info">
+            <h3 class="product-name">{bag.name}</h3>
+            <p class="product-description">{bag.description}</p>
+            <p class="product-price">${bag.price}</p>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- PRODUCTS SECTION -->
-    <section id="products" class="products">
-      <div class="container">
-        <h2 class="section-title">Our Collection</h2>
-
-        <div class="products-grid">
-          {#each data.bags as bag}
-            <div class="product-card">
-              <div class="product-image-wrapper">
-                <img src={bag.image_url || 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=600'} alt={bag.name} class="product-image" />
-                {#if !bag.in_stock}
-                  <div class="out-of-stock-badge">Out of Stock</div>
-                {/if}
-              </div>
-              <div class="product-info">
-                <h3 class="product-name">{bag.name}</h3>
-                <p class="product-description">{bag.description}</p>
-                <p class="product-price">${bag.price}</p>
-              </div>
-            </div>
-          {:else}
-            <div class="no-products">
-              <p>No products available at the moment.</p>
-              <p class="coming-soon">New arrivals coming soon...</p>
-            </div>
-          {/each}
+      {:else}
+        <div class="no-products">
+          <p>No products available at the moment.</p>
+          <p class="coming-soon">New arrivals coming soon...</p>
         </div>
-      </div>
-    </section>
-  </main>
+      {/each}
+    </div>
+  </div>
+</section>
 
-  <Footer />
-</div>
+<section class="appointment-section">
+  <div class="container">
+    <h2 class="section-title">Book Your Private Appointment</h2>
+    <p class="section-description">
+      Schedule an exclusive one-on-one luxury experience with House of Le Pallevon.
+    </p>
+
+    <AppointmentForm />
+  </div>
+</section>
+
+
+<Footer />
 
 <style>
-  :global(body) {
-    margin: 0;
-    padding: 0;
-    font-family: 'DM Sans', sans-serif;
-    color: #333;
-    line-height: 1.6;
-  }
-
-  :global(*) {
-    box-sizing: border-box;
-  }
-
-  .page-wrapper {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  }
-
-  .header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  .nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-  }
-
-  .logo {
-    font-family: 'Libre Baskerville', serif;
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-decoration: none;
-    color: #1a1a1a;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 32px;
-  }
-
-  .nav-link {
-    text-decoration: none;
-    color: #333;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    transition: color 0.3s ease;
-  }
-
-  .nav-link:hover {
-    color: #c58e46;
-  }
-
-  .btn-logout {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  main {
-    flex: 1;
-    padding-top: 80px;
-  }
+  /* NOTE: Global body/nav styles have been moved to +layout.svelte */
 
   .hero {
     position: relative;
@@ -535,39 +440,25 @@
   }
 
   .single-image {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: 4px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.single-image img {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.single-image:hover img {
-  transform: scale(1.02);
-}
-
-@media (max-width: 768px) {
-  .single-image {
-    max-width: 90%;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   }
-}
 
-@media (max-width: 480px) {
-  .single-image {
-    max-width: 100%;
-    border-radius: 2px;
+  .single-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.4s ease;
   }
-}
 
+  .single-image:hover img {
+    transform: scale(1.02);
+  }
 
   .products {
     padding: 96px 0;
@@ -687,24 +578,9 @@
     font-style: italic;
   }
 
+  /* --- RESPONSIVE STYLES --- */
+
   @media (max-width: 768px) {
-    .logo {
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
-
-    .nav-links {
-      gap: 16px;
-    }
-
-    .nav-link {
-      font-size: 12px;
-    }
-
-    main {
-      padding-top: 60px;
-    }
-
     .hero {
       height: 500px;
     }
@@ -771,6 +647,10 @@
       grid-template-columns: 1fr;
       gap: 24px;
     }
+
+    .single-image {
+      max-width: 90%;
+    }
   }
 
   @media (max-width: 480px) {
@@ -811,5 +691,26 @@
         transform: translateX(calc(-70% - 24px));
       }
     }
+
+    .single-image {
+      max-width: 100%;
+      border-radius: 2px;
+    }
+
+    .appointment-section {
+  padding: 80px 0;
+  background: #fafafa;
+}
+
+.appointment-section .section-title {
+  margin-bottom: 24px;
+}
+
+.appointment-section .section-description {
+  margin-bottom: 40px;
+  font-size: 16px;
+  color: #555;
+}
+
   }
 </style>

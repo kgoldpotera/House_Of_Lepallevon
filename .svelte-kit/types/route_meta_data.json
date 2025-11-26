@@ -8,6 +8,9 @@
 		"src/routes/admin/+page.server.ts",
 		"src/routes/+layout.server.ts"
 	],
+	"/api/appointment": [
+		"src/routes/api/appointment/+server.ts"
+	],
 	"/auth/callback": [
 		"src/routes/auth/callback/+server.ts"
 	],
